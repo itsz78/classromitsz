@@ -1,0 +1,103 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('background.jpg');
+    background-size: cover;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative; /* Para posicionar elementos en relación a toda la pantalla */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px; /* Ajustable a dispositivos móviles */
+    width: 100%;
+}
+
+input, select, button {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+#profileImageContainer {
+    position: relative;
+}
+
+#profileImage {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+#changeImageButton {
+    margin-top: 15px;
+    width: 100%;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.nav-buttons button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.nav-buttons img {
+    width: 50px;
+    height: 50px;
+}
+
+#editButton {
+    position: fixed; /* Cambiado a fixed para posicionarlo en la esquina de la pantalla */
+    top: 10px; /* Ajusta la distancia desde el borde superior de la pantalla */
+    right: 10px; /* Ajusta la distancia desde el borde derecho de la pantalla */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    z-index: 100; /* Para que se mantenga visible sobre otros elementos */
+}
+
+#editButton img {
+    width: 30px;
+    height: 30px;
+}
+
+@media screen and (max-width: 600px) {
+    #profileImage {
+        width: 100px;
+        height: 100px;
+    }
+    .nav-buttons img {
+        width: 60px;
+        height: 60px;
+    }
+    #editButton img {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+

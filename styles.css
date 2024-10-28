@@ -1,0 +1,85 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('f.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden; /* Para evitar desplazamientos no deseados */
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    padding: 2rem; /* Uso de rem en lugar de px para escalabilidad */
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    max-width: 400px; /* Máximo ancho en pantallas grandes */
+    width: 90vw; /* Ajustable a la pantalla del dispositivo */
+    margin: 0 auto; /* Centrado automático */
+}
+
+input, select, button {
+    width: 100%;
+    margin-bottom: 1rem; /* Uso de rem para consistencia */
+    padding: 1rem; /* Cuadros de texto ajustables */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem; /* Tamaño del texto ajustable con la pantalla */
+}
+
+h2 {
+    margin-bottom: 2rem; /* Ajuste en rem */
+    font-size: 2rem; /* Ajuste flexible del tamaño del título */
+}
+
+.error {
+    color: red;
+    margin-top: 1rem; /* Ajuste con rem */
+}
+
+p {
+    margin-top: 1rem;
+    font-size: 1rem;
+}
+
+/* Media query para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.8rem;
+    }
+
+    input, select, button {
+        padding: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Ajuste de pantallas muy pequeñas (por debajo de 400px) */
+@media screen and (max-width: 400px) {
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    input, select, button {
+        padding: 0.7rem;
+        font-size: 0.8rem;
+    }
+
+    p {
+        font-size: 0.75rem;
+    }
+}
+
+

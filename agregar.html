@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Clases</title>
+    <link rel="stylesheet" href="styles3.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Gestionar Clases</h2>
+        <div id="userTypeOptions"></div>
+
+        <div id="subjectsContainer">
+            <h3>Materias</h3>
+            <!-- Botón para desplegar menú de edición de materias -->
+            <button id="editSubjectButton">Editar Materias</button>
+            <ul id="subjectsList"></ul>
+            <button id="addSubjectButton">Agregar Materia</button>
+        </div>
+
+        <!-- Contenedor de edición de materias -->
+        <div id="editMenu" style="display:none;">
+            <h3>Editar Materia</h3>
+            <ul id="editSubjectsList"></ul>
+        </div>
+
+        <div id="topicsContainer" style="display:none;">
+            <h3>Temas de la Materia</h3>
+            <ul id="topicsList"></ul>
+        </div>
+
+        <div id="examContainer" style="display:none;">
+            <h3>Exámenes de la Materia</h3>
+            <div id="savedExamsContainer"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="subjects.html"><button><img src="a.png" alt="avance"></button></a>
+            <a href="visualizar.html"><button><img src="c.png" alt="Visualizar"></button></a>
+            <a href="profile.html"><button><img src="p.png" alt="Perfil"></button></a>
+        </div>
+    </div>
+    <script src="agregar.js"></script>
+</body>
+</html>
+
+

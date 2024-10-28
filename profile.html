@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <div class="container">
+        <button id="editButton"><img src="e.png" alt="Editar Perfil"></button> <!-- Botón de editar con imagen -->
+        
+        <div id="profileImageContainer">
+            <img id="profileImage" src="default.png" alt="Profile Image">
+            <input type="file" id="uploadImage" style="display:none;">
+            <button id="changeImageButton">Cambiar Foto</button>
+        </div>
+        
+        <h2 id="userName"></h2>
+        <p id="userSchedule"></p>
+            <div class="nav-buttons">
+                <a href="subjects.html"><button><img src="a.png" alt="Materias"></button></a>
+                <a href="classes.html"><button><img src="c.png" alt="classes"></button></a>
+                <a href="profile.html"><button><img src="p.png" alt="Perfil"></button></a>
+            </div>
+    </div>
+    <script src="cordova.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+
