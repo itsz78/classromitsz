@@ -51,7 +51,7 @@ function registerUser() {
     localStorage.setItem('currentUser', email);
 
     // Redirigir a la página de perfil
-    window.location.href = 'perfil.html';
+    window.location.href = 'index.html';
 }
 
 // Función para iniciar sesión
