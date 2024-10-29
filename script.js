@@ -5,7 +5,7 @@ window.onload = function() {
     const isRegisterPage = window.location.pathname.includes('register.html');
 
     if (currentUserEmail && !isLoginPage && !isRegisterPage) {
-        window.location.href = 'perfil.html';
+        window.location.href = 'profile.html';
     }
 };
 
@@ -104,6 +104,6 @@ function loadProfile() {
 }
 
 // Cargar el perfil si estamos en perfil.html
-if (window.location.pathname.includes('perfil.html')) {
+if (window.location.pathname.includes('profile.html')) {
     loadProfile();
 }
