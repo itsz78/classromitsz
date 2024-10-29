@@ -1,3 +1,12 @@
+// Cargar la página y verificar si hay un usuario logueado
+window.onload = function() {
+    const currentUserEmail = localStorage.getItem('currentUser');
+    const isLoginPage = window.location.pathname.includes('index.html');
+
+    // Si el usuario está logueado y está en index.html, no hacer nada
+    // Esto se gestiona en el inicio de sesión
+};
+
 // Función para registrar usuario
 function registerUser() {
     const email = document.getElementById('email').value.trim();
@@ -135,3 +144,4 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
     event.preventDefault();
     loginUser();
 });
+
