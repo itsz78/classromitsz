@@ -1,14 +1,3 @@
-// Cargar la página y verificar si hay un usuario logueado
-window.onload = function() {
-    const currentUserEmail = localStorage.getItem('currentUser');
-    const isLoginPage = window.location.pathname.includes('index.html');
-
-    // Si el usuario está logueado y está en index.html, redirigir a profile.html
-    if (currentUserEmail && isLoginPage) {
-        window.location.href = 'profile.html';
-    }
-};
-
 // Función para registrar usuario
 function registerUser() {
     const email = document.getElementById('email').value.trim();
@@ -79,18 +68,7 @@ function loginUser() {
     }
 }
 
-// Eventos de clic en los botones de registro e inicio de sesión
-document.getElementById('registerForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-    registerUser();
-});
-
-document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-    event.preventDefault();
-    loginUser();
-});
-
-// Mostrar datos de usuario en el perfil
+// Cargar datos del perfil y mostrar imagen
 function loadProfile() {
     const email = localStorage.getItem('currentUser');
     if (email) {
@@ -103,7 +81,57 @@ function loadProfile() {
     }
 }
 
+// Función para subir una imagen de perfil
+document.getElementById('changeImageButton').addEventListener('click', function() {
+    document.getElementById('uploadImage').click();
+});
+
+document.getElementById('uploadImage').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const email = localStorage.getItem('currentUser');
+            const userData = JSON.parse(localStorage.getItem(email));
+            userData.profileImage = e.target.result; // Guardar la imagen como base64 en localStorage
+            localStorage.setItem(email, JSON.stringify(userData));
+            document.getElementById('profileImage').src = e.target.result; // Actualizar imagen en la página
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Función para editar los datos del usuario desde profile.html
+function editUserData() {
+    const email = localStorage.getItem('currentUser');
+    const userData = JSON.parse(localStorage.getItem(email));
+
+    // Obtener nuevos datos del usuario
+    userData.name = prompt("Edita tu nombre:", userData.name) || userData.name;
+    userData.schedule = prompt("Edita tu horario:", userData.schedule) || userData.schedule;
+
+    // Guardar los cambios en localStorage
+    localStorage.setItem(email, JSON.stringify(userData));
+
+    // Actualizar en la página
+    loadProfile();
+}
+
+// Evento para editar los datos al hacer clic en el botón de edición
+document.getElementById('editButton').addEventListener('click', editUserData);
+
 // Cargar el perfil si estamos en profile.html
 if (window.location.pathname.includes('profile.html')) {
     loadProfile();
 }
+
+// Eventos de clic en los botones de registro e inicio de sesión
+document.getElementById('registerForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    registerUser();
+});
+
+document.getElementById('loginForm')?.addEventListener('submit', function(event) {
+    event.preventDefault();
+    loginUser();
+});
