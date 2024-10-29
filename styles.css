@@ -68,6 +68,10 @@ p {
 
 /* Ajuste de pantallas muy pequeñas (por debajo de 400px) */
 @media screen and (max-width: 400px) {
+    .container {
+        padding: 1rem; /* Reduce el padding */
+    }
+
     h2 {
         font-size: 1.6rem;
     }
@@ -81,5 +85,3 @@ p {
         font-size: 0.75rem;
     }
 }
-
-
