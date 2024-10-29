@@ -2,10 +2,9 @@
 window.onload = function() {
     const currentUserEmail = localStorage.getItem('currentUser');
     const isLoginPage = window.location.pathname.includes('index.html');
-    const isRegisterPage = window.location.pathname.includes('register.html');
 
-    if (currentUserEmail && (isLoginPage || isRegisterPage)) {
-        // Si el usuario está logueado y está en la página de login o registro, redirigir a perfil
+    // Si el usuario está logueado y está en index.html, redirigir a profile.html
+    if (currentUserEmail && isLoginPage) {
         window.location.href = 'profile.html';
     }
 };
@@ -51,7 +50,7 @@ function registerUser() {
     // Guardar el email como usuario actual
     localStorage.setItem('currentUser', email);
 
-    // Redirigir a la página de inicio de sesión
+    // Redirigir a la página de inicio de sesión (index.html)
     window.location.href = 'index.html';
 }
 
