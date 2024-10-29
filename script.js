@@ -4,7 +4,8 @@ window.onload = function() {
     const isLoginPage = window.location.pathname.includes('index.html');
     const isRegisterPage = window.location.pathname.includes('register.html');
 
-    if (currentUserEmail && !isLoginPage && !isRegisterPage) {
+    if (currentUserEmail && (isLoginPage || isRegisterPage)) {
+        // Si el usuario está logueado y está en la página de login o registro, redirigir a perfil
         window.location.href = 'profile.html';
     }
 };
@@ -50,7 +51,7 @@ function registerUser() {
     // Guardar el email como usuario actual
     localStorage.setItem('currentUser', email);
 
-    // Redirigir a la página de perfil
+    // Redirigir a la página de inicio de sesión
     window.location.href = 'index.html';
 }
 
@@ -70,7 +71,7 @@ function loginUser() {
             localStorage.setItem('currentUser', email);
 
             // Redirigir a la página de perfil
-            window.location.href = 'perfil.html';
+            window.location.href = 'profile.html';
         } else {
             alert('Contraseña incorrecta.');
         }
@@ -103,7 +104,7 @@ function loadProfile() {
     }
 }
 
-// Cargar el perfil si estamos en perfil.html
+// Cargar el perfil si estamos en profile.html
 if (window.location.pathname.includes('profile.html')) {
     loadProfile();
 }
