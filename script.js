@@ -3,8 +3,10 @@ window.onload = function() {
     const currentUserEmail = localStorage.getItem('currentUser');
     const isLoginPage = window.location.pathname.includes('index.html');
 
-    // Si el usuario está logueado y está en index.html, no hacer nada
-    // Esto se gestiona en el inicio de sesión
+    // Si el usuario está logueado y está en index.html, redirigir a profile.html
+    if (currentUserEmail && isLoginPage) {
+        window.location.href = 'profile.html';
+    }
 };
 
 // Función para registrar usuario
@@ -93,11 +95,11 @@ if (window.location.pathname.includes('profile.html')) {
 }
 
 // Función para subir una imagen de perfil
-document.getElementById('changeImageButton').addEventListener('click', function() {
+document.getElementById('changeImageButton')?.addEventListener('click', function() {
     document.getElementById('uploadImage').click();
 });
 
-document.getElementById('uploadImage').addEventListener('change', function(event) {
+document.getElementById('uploadImage')?.addEventListener('change', function(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -129,7 +131,7 @@ function editUserData() {
 }
 
 // Evento para editar los datos al hacer clic en el botón de edición
-document.getElementById('editButton').addEventListener('click', editUserData);
+document.getElementById('editButton')?.addEventListener('click', editUserData);
 
 // Eventos de clic en los botones de registro e inicio de sesión
 document.getElementById('registerForm')?.addEventListener('submit', function(event) {
