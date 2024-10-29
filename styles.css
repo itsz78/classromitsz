@@ -1,14 +1,18 @@
+html, body {
+    height: 100%; /* Asegura que el HTML y el body ocupen el 100% de la altura */
+    margin: 0; /* Elimina los márgenes predeterminados */
+    overflow-y: auto; /* Permite el desplazamiento vertical */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-image: url('f.jpg');
     background-size: cover;
     background-position: center;
-    margin: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
-    overflow: hidden; /* Para evitar desplazamientos no deseados */
+    align-items: flex-start; /* Cambia a flex-start para permitir el desplazamiento */
+    min-height: 100vh; /* Cambia a min-height para permitir que crezca */
 }
 
 .container {
@@ -19,7 +23,7 @@ body {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Sombra ligera */
     max-width: 400px; /* Máximo ancho en pantallas grandes */
     width: 90vw; /* Ajustable a la pantalla del dispositivo */
-    margin: 0 auto; /* Centrado automático */
+    margin: 2rem auto; /* Centrado automático con margen superior */
 }
 
 input, select, button {
