@@ -45,9 +45,6 @@ function registerUser() {
     // Guardar usuario en localStorage
     localStorage.setItem(email, JSON.stringify(newUser));
 
-    // Guardar el email como usuario actual
-    localStorage.setItem('currentUser', email);
-
     // Redirigir a la página de inicio de sesión (index.html)
     window.location.href = 'index.html';
 }
@@ -77,7 +74,7 @@ function loginUser() {
     }
 }
 
-// Cargar datos del perfil y mostrar imagen
+// Mostrar datos de usuario en el perfil
 function loadProfile() {
     const email = localStorage.getItem('currentUser');
     if (email) {
@@ -88,6 +85,11 @@ function loadProfile() {
             document.getElementById('profileImage').src = userData.profileImage || "default.png";
         }
     }
+}
+
+// Cargar el perfil si estamos en profile.html
+if (window.location.pathname.includes('profile.html')) {
+    loadProfile();
 }
 
 // Función para subir una imagen de perfil
@@ -129,11 +131,6 @@ function editUserData() {
 // Evento para editar los datos al hacer clic en el botón de edición
 document.getElementById('editButton').addEventListener('click', editUserData);
 
-// Cargar el perfil si estamos en profile.html
-if (window.location.pathname.includes('profile.html')) {
-    loadProfile();
-}
-
 // Eventos de clic en los botones de registro e inicio de sesión
 document.getElementById('registerForm')?.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -144,4 +141,3 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
     event.preventDefault();
     loginUser();
 });
-
