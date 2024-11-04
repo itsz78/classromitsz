@@ -11,7 +11,7 @@ window.onload = function() {
     }
 };
 
-// Cargar materias desde localStorage
+// Cargar materias desde localStorage y mostrar imágenes
 function loadSubjects() {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     const subjectsList = document.getElementById('subjectsList');
@@ -19,7 +19,19 @@ function loadSubjects() {
 
     subjects.forEach((subject, index) => {
         const li = document.createElement('li');
-        li.textContent = subject.name;
+
+        // Crear y añadir la imagen de la materia
+        const img = document.createElement('img');
+        img.src = subject.image;
+        img.alt = `Imagen de ${subject.name}`;
+        img.style.width = '50px';  // Ajusta el tamaño de la imagen
+        img.style.height = '50px';
+
+        const subjectName = document.createElement('span');
+        subjectName.textContent = subject.name;
+
+        li.appendChild(img); // Añadir la imagen al elemento de la lista
+        li.appendChild(subjectName); // Añadir el nombre de la materia
         li.dataset.index = index;
 
         li.addEventListener('click', function() {
@@ -30,14 +42,16 @@ function loadSubjects() {
     });
 }
 
-// Función para agregar una nueva materia
+// Función para agregar una nueva materia, ahora con imagen
 function addSubject() {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     const newSubjectName = prompt("Nombre de la nueva materia:");
+    const newSubjectImage = prompt("URL de la imagen para la materia:");
 
-    if (newSubjectName) {
+    if (newSubjectName && newSubjectImage) {
         const newSubject = {
             name: newSubjectName,
+            image: newSubjectImage,  // Añadimos la URL de la imagen
             topics: [],
             exams: []
         };
@@ -45,7 +59,7 @@ function addSubject() {
         localStorage.setItem('subjects', JSON.stringify(subjects));
         loadSubjects(); // Recargar la lista de materias en la interfaz
     } else {
-        alert("No se ingresó un nombre válido para la materia.");
+        alert("Se requiere un nombre y una URL de imagen válidos para la materia.");
     }
 }
 
@@ -93,15 +107,20 @@ document.getElementById('editSubjectButton').addEventListener('click', function(
     });
 });
 
-// Editar una materia
+// Editar una materia (actualizar nombre y URL de imagen)
 function editSubject(index) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newName = prompt("Nuevo nombre de la materia:", subjects[index].name);
+    const newImage = prompt("Nueva URL de la imagen de la materia:", subjects[index].image);
+
     if (newName) {
         subjects[index].name = newName;
-        localStorage.setItem('subjects', JSON.stringify(subjects));
-        loadSubjects();
     }
+    if (newImage) {
+        subjects[index].image = newImage;
+    }
+    localStorage.setItem('subjects', JSON.stringify(subjects));
+    loadSubjects();
 }
 
 // Eliminar una materia
@@ -234,29 +253,30 @@ function loadExams(subjectIndex) {
     addExamButton.addEventListener('click', function() {
         addExam(subjectIndex);
     });
+
     savedExamsContainer.appendChild(addExamButton);
 }
 
-// Función para agregar un nuevo examen
+// Agregar un examen a una materia
 function addExam(subjectIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newExamName = prompt("Nombre del nuevo examen:");
-    const newExamLink = prompt("Enlace del nuevo examen:");
+    const examLink = prompt("Enlace del examen:");
 
-    if (newExamName && newExamLink) {
+    if (newExamName) {
         const newExam = {
             name: newExamName,
-            link: newExamLink
+            link: examLink
         };
         subjects[subjectIndex].exams.push(newExam);
         localStorage.setItem('subjects', JSON.stringify(subjects));
-        loadExams(subjectIndex); // Recargar los exámenes de la materia
+        loadExams(subjectIndex);
     } else {
-        alert("No se ingresó un nombre o enlace válido para el examen.");
+        alert("No se ingresó un nombre válido para el examen.");
     }
 }
 
-// Eliminar un examen
+// Eliminar examen de una materia
 function deleteExam(subjectIndex, examIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     if (confirm("¿Estás seguro de que quieres eliminar este examen?")) {
@@ -265,5 +285,3 @@ function deleteExam(subjectIndex, examIndex) {
         loadExams(subjectIndex);
     }
 }
-
-
