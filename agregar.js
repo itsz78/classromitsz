@@ -22,9 +22,9 @@ function loadSubjects() {
 
         // Crear y añadir la imagen de la materia
         const img = document.createElement('img');
-        img.src = subject.image;  // Utilizar imagen local
+        img.src = subject.image;
         img.alt = `Imagen de ${subject.name}`;
-        img.style.width = '50px';
+        img.style.width = '50px';  // Ajusta el tamaño de la imagen
         img.style.height = '50px';
 
         const subjectName = document.createElement('span');
@@ -42,35 +42,37 @@ function loadSubjects() {
     });
 }
 
-// Función para agregar una nueva materia con imagen local
+// Función para agregar una nueva materia con selección de imagen desde almacenamiento
 function addSubject() {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     const newSubjectName = prompt("Nombre de la nueva materia:");
-    
+
     if (newSubjectName) {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = 'image/*';
+
         fileInput.onchange = function(event) {
             const file = event.target.files[0];
             const reader = new FileReader();
-            
+
             reader.onload = function(e) {
                 const newSubject = {
                     name: newSubjectName,
-                    image: e.target.result, // Almacenar la imagen como base64
+                    image: e.target.result,  // Almacena la imagen como un Data URI
                     topics: [],
                     exams: []
                 };
+
                 subjects.push(newSubject);
                 localStorage.setItem('subjects', JSON.stringify(subjects));
                 loadSubjects(); // Recargar la lista de materias en la interfaz
             };
-            
-            reader.readAsDataURL(file); // Leer la imagen como base64
+
+            reader.readAsDataURL(file);
         };
-        
-        fileInput.click(); // Simular el clic en el input de archivo
+
+        fileInput.click(); // Activar el selector de archivos
     } else {
         alert("Se requiere un nombre válido para la materia.");
     }
@@ -79,7 +81,7 @@ function addSubject() {
 // Vincula el botón de agregar materia con la función addSubject
 document.getElementById('addSubjectButton').addEventListener('click', addSubject);
 
-// Función para editar una materia (actualizar nombre y imagen)
+// Función para editar una materia (nombre e imagen)
 function editSubject(index) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newName = prompt("Nuevo nombre de la materia:", subjects[index].name);
@@ -91,6 +93,7 @@ function editSubject(index) {
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
     fileInput.accept = 'image/*';
+
     fileInput.onchange = function(event) {
         const file = event.target.files[0];
         const reader = new FileReader();
@@ -103,10 +106,11 @@ function editSubject(index) {
 
         reader.readAsDataURL(file);
     };
+
     fileInput.click();
 }
 
-// Función para eliminar una materia
+// Eliminar una materia
 function deleteSubject(index) {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     if (confirm("¿Estás seguro de que quieres eliminar esta materia?")) {
@@ -127,12 +131,14 @@ function viewTopics(subjectIndex) {
         const li = document.createElement('li');
         li.textContent = topic.name;
 
+        // Botón para editar tema
         const editButton = document.createElement('button');
         editButton.textContent = 'Editar';
         editButton.addEventListener('click', function() {
             editTopic(subjectIndex, index);
         });
 
+        // Botón para eliminar tema
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Eliminar';
         deleteButton.addEventListener('click', function() {
@@ -144,6 +150,7 @@ function viewTopics(subjectIndex) {
         topicsList.appendChild(li);
     });
 
+    // Botón para agregar nueva lección
     const addTopicButton = document.createElement('button');
     addTopicButton.textContent = 'Agregar Lección';
     addTopicButton.addEventListener('click', function() {
@@ -156,43 +163,38 @@ function viewTopics(subjectIndex) {
     loadExams(subjectIndex);
 }
 
-// Agregar un nuevo tema
+// Función para agregar un nuevo tema
 function addTopic(subjectIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newTopicName = prompt("Nombre de la nueva lección:");
-    const lessonLink = prompt("Enlace del video de la lección:");
 
     if (newTopicName) {
         const newTopic = {
             name: newTopicName,
-            lesson: lessonLink
+            lesson: null
         };
         subjects[subjectIndex].topics.push(newTopic);
         localStorage.setItem('subjects', JSON.stringify(subjects));
-        viewTopics(subjectIndex);
+        viewTopics(subjectIndex); // Recargar los temas de la materia
     } else {
         alert("No se ingresó un nombre válido para la lección.");
     }
 }
 
-// Editar un tema
+// Editar tema
 function editTopic(subjectIndex, topicIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newTopicName = prompt("Nuevo nombre del tema:", subjects[subjectIndex].topics[topicIndex].name);
-    const newLessonLink = prompt("Nuevo enlace del video de la lección:", subjects[subjectIndex].topics[topicIndex].lesson);
 
     if (newTopicName) {
         subjects[subjectIndex].topics[topicIndex].name = newTopicName;
-    }
-    if (newLessonLink) {
-        subjects[subjectIndex].topics[topicIndex].lesson = newLessonLink;
     }
 
     localStorage.setItem('subjects', JSON.stringify(subjects));
     viewTopics(subjectIndex);
 }
 
-// Eliminar un tema
+// Eliminar tema
 function deleteTopic(subjectIndex, topicIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     if (confirm("¿Estás seguro de que quieres eliminar este tema?")) {
@@ -205,7 +207,7 @@ function deleteTopic(subjectIndex, topicIndex) {
 // Cargar exámenes guardados de la materia
 function loadExams(subjectIndex) {
     const savedExamsContainer = document.getElementById('savedExamsContainer');
-    savedExamsContainer.innerHTML = ''; 
+    savedExamsContainer.innerHTML = ''; // Limpiar antes de mostrar
 
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const exams = subjects[subjectIndex].exams || [];
@@ -213,9 +215,10 @@ function loadExams(subjectIndex) {
     exams.forEach((exam, index) => {
         const examLink = document.createElement('a');
         examLink.href = exam.link;
-        examLink.textContent = `${exam.name} (Examen ${index + 1})`;
+        examLink.textContent = `${exam.name} (Examen ${index + 1})`; // Mostrar nombre del examen
         examLink.target = '_blank';
 
+        // Botón para eliminar examen
         const deleteExamButton = document.createElement('button');
         deleteExamButton.textContent = 'Eliminar';
         deleteExamButton.addEventListener('click', function() {
@@ -226,6 +229,7 @@ function loadExams(subjectIndex) {
         savedExamsContainer.appendChild(deleteExamButton);
     });
 
+    // Botón para agregar un nuevo examen
     const addExamButton = document.createElement('button');
     addExamButton.textContent = 'Agregar Examen';
     addExamButton.addEventListener('click', function() {
@@ -254,7 +258,7 @@ function addExam(subjectIndex) {
     }
 }
 
-// Eliminar un examen de una materia
+// Eliminar examen de una materia
 function deleteExam(subjectIndex, examIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     if (confirm("¿Estás seguro de que quieres eliminar este examen?")) {
