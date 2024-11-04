@@ -24,7 +24,7 @@ function loadSubjects() {
         const img = document.createElement('img');
         img.src = subject.image;
         img.alt = `Imagen de ${subject.name}`;
-        img.style.width = '50px';  // Ajusta el tamaño de la imagen
+        img.style.width = '50px';
         img.style.height = '50px';
 
         const subjectName = document.createElement('span');
@@ -59,20 +59,20 @@ function addSubject() {
             reader.onload = function(e) {
                 const newSubject = {
                     name: newSubjectName,
-                    image: e.target.result,  // Almacena la imagen como un Data URI
+                    image: e.target.result,
                     topics: [],
                     exams: []
                 };
 
                 subjects.push(newSubject);
                 localStorage.setItem('subjects', JSON.stringify(subjects));
-                loadSubjects(); // Recargar la lista de materias en la interfaz
+                loadSubjects();
             };
 
             reader.readAsDataURL(file);
         };
 
-        fileInput.click(); // Activar el selector de archivos
+        fileInput.click();
     } else {
         alert("Se requiere un nombre válido para la materia.");
     }
@@ -163,19 +163,21 @@ function viewTopics(subjectIndex) {
     loadExams(subjectIndex);
 }
 
-// Función para agregar un nuevo tema
+// Función para agregar un nuevo tema con un enlace de video
 function addTopic(subjectIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newTopicName = prompt("Nombre de la nueva lección:");
 
     if (newTopicName) {
+        const videoLink = prompt("Enlace de video de YouTube:");
+
         const newTopic = {
             name: newTopicName,
-            lesson: null
+            lesson: videoLink || null
         };
         subjects[subjectIndex].topics.push(newTopic);
         localStorage.setItem('subjects', JSON.stringify(subjects));
-        viewTopics(subjectIndex); // Recargar los temas de la materia
+        viewTopics(subjectIndex);
     } else {
         alert("No se ingresó un nombre válido para la lección.");
     }
@@ -188,6 +190,11 @@ function editTopic(subjectIndex, topicIndex) {
 
     if (newTopicName) {
         subjects[subjectIndex].topics[topicIndex].name = newTopicName;
+    }
+
+    const newLessonLink = prompt("Nuevo enlace de video de YouTube:", subjects[subjectIndex].topics[topicIndex].lesson);
+    if (newLessonLink) {
+        subjects[subjectIndex].topics[topicIndex].lesson = newLessonLink;
     }
 
     localStorage.setItem('subjects', JSON.stringify(subjects));
@@ -207,7 +214,7 @@ function deleteTopic(subjectIndex, topicIndex) {
 // Cargar exámenes guardados de la materia
 function loadExams(subjectIndex) {
     const savedExamsContainer = document.getElementById('savedExamsContainer');
-    savedExamsContainer.innerHTML = ''; // Limpiar antes de mostrar
+    savedExamsContainer.innerHTML = '';
 
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const exams = subjects[subjectIndex].exams || [];
@@ -215,7 +222,7 @@ function loadExams(subjectIndex) {
     exams.forEach((exam, index) => {
         const examLink = document.createElement('a');
         examLink.href = exam.link;
-        examLink.textContent = `${exam.name} (Examen ${index + 1})`; // Mostrar nombre del examen
+        examLink.textContent = `${exam.name} (Examen ${index + 1})`;
         examLink.target = '_blank';
 
         // Botón para eliminar examen
