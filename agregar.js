@@ -214,7 +214,7 @@ function deleteTopic(subjectIndex, topicIndex) {
 // Cargar exámenes guardados de la materia
 function loadExams(subjectIndex) {
     const savedExamsContainer = document.getElementById('savedExamsContainer');
-    savedExamsContainer.innerHTML = '';
+    savedExamsContainer.innerHTML = ''; // Limpiar antes de mostrar
 
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const exams = subjects[subjectIndex].exams || [];
@@ -222,7 +222,7 @@ function loadExams(subjectIndex) {
     exams.forEach((exam, index) => {
         const examLink = document.createElement('a');
         examLink.href = exam.link;
-        examLink.textContent = `${exam.name} (Examen ${index + 1})`;
+        examLink.textContent = `${exam.name} (Examen ${index + 1})`; // Mostrar nombre del examen
         examLink.target = '_blank';
 
         // Botón para eliminar examen
@@ -242,35 +242,34 @@ function loadExams(subjectIndex) {
     addExamButton.addEventListener('click', function() {
         addExam(subjectIndex);
     });
-
     savedExamsContainer.appendChild(addExamButton);
 }
 
-// Agregar un examen a una materia
+// Función para agregar un nuevo examen con nombre y enlace a Google Formularios
 function addExam(subjectIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     const newExamName = prompt("Nombre del nuevo examen:");
-    const examLink = prompt("Enlace del examen:");
+    const newExamLink = prompt("Enlace del nuevo examen:");
 
-    if (newExamName) {
+    if (newExamName && newExamLink) {
         const newExam = {
             name: newExamName,
-            link: examLink
+            link: newExamLink
         };
         subjects[subjectIndex].exams.push(newExam);
         localStorage.setItem('subjects', JSON.stringify(subjects));
-        loadExams(subjectIndex);
+        loadExams(subjectIndex); // Recargar los exámenes de la materia
     } else {
-        alert("No se ingresó un nombre válido para el examen.");
+        alert("No se ingresó un nombre o enlace válido para el examen.");
     }
 }
 
-// Eliminar examen de una materia
+// Eliminar un examen
 function deleteExam(subjectIndex, examIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects'));
     if (confirm("¿Estás seguro de que quieres eliminar este examen?")) {
         subjects[subjectIndex].exams.splice(examIndex, 1);
         localStorage.setItem('subjects', JSON.stringify(subjects));
-        loadExams(subjectIndex);
+        loadExams(subjectIndex); // Recargar los exámenes de la materia
     }
 }
