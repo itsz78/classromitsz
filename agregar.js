@@ -1,18 +1,30 @@
 window.onload = function() {
-    const currentUserEmail = localStorage.getItem('currentUser');
+    const currentUserEmail = localStorage.getItem('currentUser'); // Recupera el correo del usuario actual
     if (currentUserEmail) {
-        const currentUser = JSON.parse(localStorage.getItem(currentUserEmail));
-        if (currentUser) {
-            document.getElementById('userTypeOptions').textContent = `Tipo de Usuario: ${currentUser.type}`;
-            const isTeacher = currentUser.type === 'maestro';
-            loadSubjects();
-            enableTeacherButtons(isTeacher);
+        const currentUserData = localStorage.getItem(currentUserEmail);
+        
+        if (currentUserData) {
+            const currentUser = JSON.parse(currentUserData);
+
+            // Verifica si el campo Tipo existe y es válido
+            if (currentUser.Tipo) {
+                document.getElementById('userTypeOptions').textContent = `Tipo de Usuario: ${currentUser.Tipo}`;
+                
+                // Activa o desactiva funciones según el tipo de usuario
+                const isTeacher = currentUser.Tipo === 'Maestro';
+                loadSubjects();
+                enableTeacherButtons(isTeacher);
+                return; // Finaliza si todo está bien
+            }
         }
     }
+
+    // Si no se encuentra información válida del usuario
+    document.getElementById('userTypeOptions').textContent = "Usuario no válido o no registrado.";
+    enableTeacherButtons(false); // Desactiva todo por seguridad
 };
 
 function enableTeacherButtons(isTeacher) {
-    // Lista de botones relacionados con las funciones del maestro
     const teacherButtons = [
         'addSubjectButton',
         'editSubjectButton',
@@ -24,23 +36,30 @@ function enableTeacherButtons(isTeacher) {
         'deleteExamButton'
     ];
 
-    // Habilitar o deshabilitar botones según el tipo de usuario
     teacherButtons.forEach(buttonId => {
         const button = document.getElementById(buttonId);
         if (button) {
-            button.style.display = isTeacher ? 'inline-block' : 'none'; // Mostrar solo si es maestro
+            button.style.display = isTeacher ? 'inline-block' : 'none'; // Muestra solo si es maestro
         }
     });
+}
 
-    // Opcional: Si deseas deshabilitar botones en lugar de ocultarlos
-    /*
-    teacherButtons.forEach(buttonId => {
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.disabled = !isTeacher; // Desactivar si no es maestro
-        }
+function loadSubjects() {
+    const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+    const subjectsList = document.getElementById('subjectsList');
+    subjectsList.innerHTML = ''; // Limpiar la lista antes de cargar
+
+    subjects.forEach((subject, index) => {
+        const li = document.createElement('li');
+        li.textContent = subject.name;
+        li.dataset.index = index;
+
+        li.addEventListener('click', function() {
+            viewTopics(index);
+        });
+
+        subjectsList.appendChild(li);
     });
-    */
 }
 
 // Cargar materias desde localStorage
