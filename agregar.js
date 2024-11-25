@@ -1,73 +1,15 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Obtener el email del usuario actual desde localStorage
+// Mostrar tipos de usuario
+window.onload = function() {
     const currentUserEmail = localStorage.getItem('currentUser');
-    
-    if (!currentUserEmail) {
-        console.error('No se encontró ningún usuario actual en localStorage.');
-        return;
-    }
+    const currentUser = JSON.parse(localStorage.getItem(currentUserEmail));
 
-    // Recuperar los datos del usuario actual
-    const currentUserData = localStorage.getItem(currentUserEmail);
-
-    if (!currentUserData) {
-        console.error(`No se encontraron datos para el usuario: ${currentUserEmail}`);
-        return;
-    }
-
-    let currentUser;
-    try {
-        currentUser = JSON.parse(currentUserData);
-    } catch (error) {
-        console.error('Error al analizar los datos del usuario:', error);
-        return;
-    }
-
-    // Verificar que el objeto usuario tiene la propiedad "type"
-    if (!currentUser.type) {
-        console.error('El tipo de usuario no está definido.');
-        return;
-    }
-
-    // Mostrar el tipo de usuario en la interfaz
-    const userTypeOptions = document.getElementById('userTypeOptions');
-    if (userTypeOptions) {
-        userTypeOptions.textContent = `Tipo de Usuario: ${currentUser.type}`;
-    } else {
-        console.warn('No se encontró el elemento con ID "userTypeOptions".');
-    }
-
-    // Verificar el tipo de usuario y habilitar/deshabilitar botones según corresponda
-    if (currentUser.type.toLowerCase() === 'maestro') {
-        loadSubjects(); // Cargar materias
-        enableTeacherButtons(true); // Habilitar botones
-    } else {
-        enableTeacherButtons(false); // Deshabilitar botones
-    }
-});
-
-// Función para habilitar/deshabilitar botones según el tipo de usuario
-function enableTeacherButtons(isTeacher) {
-    const buttonIds = [
-        'addSubjectButton',
-        'editSubjectButton',
-        'addTopicButton',
-        'editTopicButton',
-        'addExamButton',
-        'deleteSubjectButton',
-        'deleteTopicButton',
-        'deleteExamButton'
-    ];
-
-    buttonIds.forEach(buttonId => {
-        const button = document.getElementById(buttonId);
-        if (button) {
-            button.disabled = !isTeacher; // Habilitar/deshabilitar según el tipo de usuario
-        } else {
-            console.warn(`No se encontró el botón con ID "${buttonId}".`);
+    if (currentUser) {
+        document.getElementById('userTypeOptions').textContent = `Tipo de Usuario: ${currentUser.type}`;
+        if (currentUser.type === 'maestro') { // Mostrar botones solo para maestros
+            loadSubjects();
         }
-    });
-}
+    }
+};
 
 // Cargar materias desde localStorage
 function loadSubjects() {
