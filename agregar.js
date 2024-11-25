@@ -1,23 +1,19 @@
 window.onload = function() {
     const currentUserEmail = localStorage.getItem('currentUser');
-    const currentUser = JSON.parse(localStorage.getItem(currentUserEmail));
-
-    if (currentUser) {
-        document.getElementById('userTypeOptions').textContent = `Tipo de Usuario: ${currentUser.type}`;
-        if (currentUser.type === 'maestro') {
+    if (currentUserEmail) {
+        const currentUser = JSON.parse(localStorage.getItem(currentUserEmail));
+        if (currentUser) {
+            document.getElementById('userTypeOptions').textContent = `Tipo de Usuario: ${currentUser.type}`;
+            const isTeacher = currentUser.type === 'maestro';
             loadSubjects();
-            // Habilitar botones solo para maestros
-            enableTeacherButtons(true);
-        } else {
-            // Desactivar los botones si es estudiante
-            enableTeacherButtons(false);
+            enableTeacherButtons(isTeacher);
         }
     }
 };
 
 function enableTeacherButtons(isTeacher) {
-    // Desactivar o habilitar botones dependiendo del tipo de usuario
-    const buttons = [
+    // Lista de botones relacionados con las funciones del maestro
+    const teacherButtons = [
         'addSubjectButton',
         'editSubjectButton',
         'addTopicButton',
@@ -28,13 +24,25 @@ function enableTeacherButtons(isTeacher) {
         'deleteExamButton'
     ];
 
-    buttons.forEach(buttonId => {
+    // Habilitar o deshabilitar botones según el tipo de usuario
+    teacherButtons.forEach(buttonId => {
         const button = document.getElementById(buttonId);
         if (button) {
-            button.disabled = !isTeacher;  // Desactivar si no es maestro
+            button.style.display = isTeacher ? 'inline-block' : 'none'; // Mostrar solo si es maestro
         }
     });
+
+    // Opcional: Si deseas deshabilitar botones en lugar de ocultarlos
+    /*
+    teacherButtons.forEach(buttonId => {
+        const button = document.getElementById(buttonId);
+        if (button) {
+            button.disabled = !isTeacher; // Desactivar si no es maestro
+        }
+    });
+    */
 }
+
 // Cargar materias desde localStorage
 function loadSubjects() {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
