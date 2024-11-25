@@ -143,3 +143,14 @@ document.getElementById('loginForm')?.addEventListener('submit', function(event)
     event.preventDefault();
     loginUser();
 });
+// Función para cerrar sesión
+function logoutUser() {
+    // Eliminar el usuario actual de localStorage
+    localStorage.removeItem('currentUser');
+
+    // Redirigir a la página de inicio de sesión
+    window.location.href = 'index.html';
+}
+
+// Evento para el botón de Cerrar Sesión
+document.getElementById('logoutButton')?.addEventListener('click', logoutUser);
