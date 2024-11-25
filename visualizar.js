@@ -1,23 +1,25 @@
-// Cargar materias y exámenes desde localStorage
+// Cargar materias desde localStorage
 window.onload = function() {
     loadSubjects();
-    loadExams();
 };
 
 // Cargar materias desde localStorage
 function loadSubjects() {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     const subjectsList = document.getElementById('subjectsList');
-    subjectsList.innerHTML = ''; // Limpiar la lista antes de cargar
+    if (subjectsList) {
+        subjectsList.innerHTML = ''; // Limpiar la lista antes de cargar
 
-    subjects.forEach((subject, index) => {
-        const li = document.createElement('li');
-        li.textContent = subject.name;
-        li.addEventListener('click', function() {
-            viewTopics(index);
+        subjects.forEach((subject, index) => {
+            const li = document.createElement('li');
+            li.textContent = subject.name;
+            li.addEventListener('click', function() {
+                viewTopics(index);
+                loadExams(index); // Cargar los exámenes al hacer clic en una materia
+            });
+            subjectsList.appendChild(li);
         });
-        subjectsList.appendChild(li);
-    });
+    }
 }
 
 // Mostrar temas de una materia
@@ -25,26 +27,37 @@ function viewTopics(subjectIndex) {
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
     const topicsContainer = document.getElementById('topicsContainer');
     const topicsList = document.getElementById('topicsList');
-    topicsList.innerHTML = '';
 
-    subjects[subjectIndex].topics.forEach((topic, topicIndex) => {
-        const li = document.createElement('li');
-        li.textContent = topic.name;
-        li.addEventListener('click', function() {
-            viewVideo(topic.lesson, subjectIndex, topicIndex);
+    if (topicsList && topicsContainer) {
+        topicsList.innerHTML = ''; // Limpiar la lista de temas
+
+        subjects[subjectIndex].topics.forEach((topic, topicIndex) => {
+            const li = document.createElement('li');
+            li.textContent = topic.name;
+            li.addEventListener('click', function() {
+                viewVideo(topic.lesson, subjectIndex, topicIndex);
+            });
+            topicsList.appendChild(li);
         });
-        topicsList.appendChild(li);
-    });
 
-    topicsContainer.style.display = 'block';
+        topicsContainer.style.display = 'block';
+    }
 }
 
 // Visualizar el video de la lección
 function viewVideo(videoUrl, subjectIndex, topicIndex) {
     const videoPlayer = document.getElementById('videoPlayer');
-    const videoId = extractVideoId(videoUrl);
-    videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-    document.getElementById('videoContainer').style.display = 'block';
+    const videoContainer = document.getElementById('videoContainer');
+
+    if (videoPlayer && videoContainer) {
+        const videoId = extractVideoId(videoUrl);
+        if (videoId) {
+            videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            videoContainer.style.display = 'block';
+        } else {
+            alert('URL del video no válida.');
+        }
+    }
 
     // Marcar la lección como vista
     const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
@@ -62,10 +75,11 @@ function updateProgress(subjectIndex) {
     const viewedCount = topics.filter(topic => topic.viewed).length;
     const percentage = (viewedCount / topics.length) * 100;
 
-    // Muestra el porcentaje en la interfaz
     const progressContainer = document.getElementById('progressContainer');
-    progressContainer.textContent = `Porcentaje de lecciones vistas: ${percentage.toFixed(2)}%`;
-    progressContainer.style.display = 'block';
+    if (progressContainer) {
+        progressContainer.textContent = `Porcentaje de lecciones vistas: ${percentage.toFixed(2)}%`;
+        progressContainer.style.display = 'block';
+    }
 }
 
 // Función para extraer el ID del video de YouTube
@@ -75,40 +89,26 @@ function extractVideoId(url) {
     return matches ? matches[1] : null;
 }
 
-// Cargar exámenes desde localStorage
-function loadExams() {
-    const exams = JSON.parse(localStorage.getItem('exams')) || [];
-    const examsList = document.getElementById('examsList');
-    examsList.innerHTML = ''; // Limpiar la lista antes de cargar
+// Cargar exámenes desde localStorage para una materia
+function loadExams(subjectIndex) {
+    const savedExamsContainer = document.getElementById('savedExamsContainer');
+    savedExamsContainer.innerHTML = ''; // Limpiar antes de mostrar
 
-    if (exams.length === 0) {
-        document.getElementById('examContainer').style.display = 'none'; // Ocultar si no hay exámenes
-        return;
-    }
+    const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+    const exams = subjects[subjectIndex].exams || [];
 
     exams.forEach((exam, index) => {
-        const li = document.createElement('li');
-        li.textContent = exam.examName;
-        li.addEventListener('click', function() {
-            openExam(index); // Cambia a la función para abrir el examen
-        });
-        examsList.appendChild(li);
+        const examLink = document.createElement('a');
+        examLink.href = exam.link;
+        examLink.textContent = `${exam.name} (Examen ${index + 1})`; // Mostrar nombre del examen
+        examLink.target = '_blank'; // Abrir en una nueva pestaña
+        savedExamsContainer.appendChild(examLink);
     });
 
     // Mostrar el contenedor de exámenes si hay exámenes disponibles
-    document.getElementById('examContainer').style.display = 'block'; 
-}
-
-// Función para abrir el examen (aquí puedes definir cómo abrir el examen)
-function openExam(examIndex) {
-    const exams = JSON.parse(localStorage.getItem('exams')) || [];
-    const examUrl = exams[examIndex].url; // Asegúrate de que 'url' esté definido en el objeto del examen
-
-    if (examUrl) {
-        window.open(examUrl, '_blank'); // Abre el examen en una nueva pestaña
+    if (exams.length > 0) {
+        savedExamsContainer.style.display = 'block';
     } else {
-        alert('URL del examen no disponible.'); // Mensaje si no hay URL
+        savedExamsContainer.style.display = 'none'; // Ocultar si no hay exámenes
     }
 }
-
-
