@@ -83,7 +83,7 @@ function loadProfile() {
         const userData = JSON.parse(localStorage.getItem(email));
         if (userData) {
             document.getElementById('userName').textContent = userData.name;
-            document.getElementById('userSchedule').textContent = `Horario: ${userData.schedule}`;
+            document.getElementById('userSchedule').textContent = `Horario laboral: ${userData.schedule}`;
             document.getElementById('profileImage').src = userData.profileImage || "default.png";
         }
     }
